@@ -26,5 +26,43 @@ public class Accounts {
     private boolean isActive;
     private Date createdDate;
     private Date updatedDate;
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getAccountHolderName() {
+		return accountHolderName;
+	}
+	public void setAccountHolderName(String accountHolderName) {
+		this.accountHolderName = accountHolderName;
+	}
+	public String getAccountUpi() {
+		return accountUpi;
+	}
+	public void setAccountUpi(String accountUpi) {
+		this.accountUpi = accountUpi;
+	}
+	public boolean isActive() {
+		return isActive;
+	}
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+	public Date getUpdatedDate() {
+		return updatedDate;
+	}
+	public void setUpdatedDate(Date updatedDate) {
+		this.updatedDate = updatedDate;
+	}
+    
+    
 
 }

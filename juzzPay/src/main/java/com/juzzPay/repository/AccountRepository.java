@@ -7,5 +7,7 @@ import com.juzzPay.entity.Accounts;
 
 @Repository
 public interface AccountRepository  extends JpaRepository<Accounts, Long> {
+	
+	Accounts findByisActive();
 
 }

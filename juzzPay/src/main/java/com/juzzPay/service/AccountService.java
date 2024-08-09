@@ -19,5 +19,10 @@ public class AccountService {
         return (List<Accounts>)
         		accountRepository.findAll();
     }
+	
+	public Accounts fetchEnabledAccount()
+    {
+        return accountRepository.findByisActive();
+    }
 
 }
