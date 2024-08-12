@@ -16,6 +16,7 @@ public class TransactionResponse {
 	public Integer id;
 	public Integer amount;
 	public Accounts account;
-	public Byte imageQR;
+	public byte[] imageQR;
+	public Integer paymentStatus;
 
 }

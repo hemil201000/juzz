@@ -22,7 +22,7 @@ public class AccountService {
 	
 	public Accounts fetchEnabledAccount()
     {
-        return accountRepository.findByisActive();
+        return accountRepository.findByIsActive(true);
     }
 
 }
