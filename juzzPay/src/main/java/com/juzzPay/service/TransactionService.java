@@ -14,7 +14,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
-import com.juzzPay.entity.Accounts;
+import com.juzzPay.entity.Account;
 import com.juzzPay.entity.Transaction;
 import com.juzzPay.json.TransactionRequest;
 import com.juzzPay.json.TransactionResponse;
@@ -32,7 +32,7 @@ public class TransactionService {
 
 	public TransactionResponse getQrImage(TransactionRequest transactionRequest) {
 		
-		Accounts account = accountService.fetchEnabledAccount();
+		Account account = accountService.fetchEnabledAccount();
 		String Upi = account.getAccountUpi();
 		String Name = account.getAccountHolderName();
 		Integer amount = transactionRequest.getAmount();

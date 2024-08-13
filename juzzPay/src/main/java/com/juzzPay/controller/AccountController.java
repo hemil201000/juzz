@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.juzzPay.entity.Accounts;
+import com.juzzPay.entity.Account;
 import com.juzzPay.json.TransactionRequest;
 import com.juzzPay.json.TransactionResponse;
 import com.juzzPay.service.AccountService;
@@ -26,7 +26,7 @@ public class AccountController {
 	private TransactionService transactionService; 
 	
 	@GetMapping("/accounts")
-    public List<Accounts> fetchAccountsList()
+    public List<Account> fetchAccountsList()
     {
         return accountService.fetchAccountList();
     }
