@@ -50,7 +50,6 @@ public class TransactionService {
 			transaction.setUpdatedDatetime(currentTime);
 			transaction.setUserStatus(2);
 			transaction.setAccount(account);
-			transaction.setQrImage(ImageUtils.compressImage(getPngFileBytes(qrImage)));
 			transactionRepository.save(transaction);
 		}
 		return null;
