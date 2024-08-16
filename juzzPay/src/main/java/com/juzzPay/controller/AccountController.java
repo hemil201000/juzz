@@ -18,25 +18,16 @@ import com.juzzPay.service.TransactionService;
 @RestController
 @RequestMapping("/test")
 public class AccountController {
-	
+
 	@Autowired
-	private AccountService accountService; 
-	
-	@Autowired
-	private TransactionService transactionService; 
-	
+	private AccountService accountService;
+
+
 	@GetMapping("/accounts")
-    public List<Account> fetchAccountsList()
-    {
-        return accountService.fetchAccountList();
-    }
+	public List<Account> fetchAccountsList() {
+		return accountService.fetchAccountList();
+	}
+
 	
-	@PostMapping("/generateQR")
-	public void saveAccount(@RequestBody TransactionRequest transactionRequest)
-	    {
-			TransactionResponse transactionResponse = new TransactionResponse();
-			transactionResponse = transactionService.getQrImage(transactionRequest);
-			
-	    }
 
 }

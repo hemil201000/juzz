@@ -21,6 +21,7 @@ import com.juzzPay.entity.Transaction;
 import com.juzzPay.json.SubmitTransactionRequest;
 import com.juzzPay.json.TransactionRequest;
 import com.juzzPay.json.TransactionResponse;
+import com.juzzPay.repository.SubmitTransactionRepository;
 import com.juzzPay.repository.TransactionRepository;
 import com.juzzPay.util.ImageUtils;
 
@@ -32,6 +33,11 @@ public class TransactionService {
 
 	@Autowired
 	public TransactionRepository transactionRepository;
+	
+	@Autowired
+	public SubmitTransactionRepository submitTransactionRepository;
+	
+	
 
 	public TransactionResponse getQrImage(TransactionRequest transactionRequest) {
 
@@ -50,7 +56,7 @@ public class TransactionService {
 			transaction.setUpdatedDatetime(currentTime);
 			transaction.setUserStatus(2);
 			transaction.setAccount(account);
-			transactionRepository.save(transaction);
+			transaction =  transactionRepository.save(transaction);
 		}
 		return null;
 	}
@@ -84,17 +90,23 @@ public class TransactionService {
 	public String submitTransaction(SubmitTransactionRequest submitTransactionRequest) {
 
 		SubmitTransaction submitTransaction = new SubmitTransaction();
+		LocalDateTime currentTime = LocalDateTime.now();
 
 		if (submitTransactionRequest.getTransactionId() != null) {
 			Transaction transaction = transactionRepository.getById(submitTransactionRequest.getTransactionId());
+			
 			if (transaction != null) {
 				submitTransaction.setTransaction(transaction);
 				if (submitTransactionRequest.getFile() != null) {
 					
 				} else if (submitTransactionRequest.getTransactionNumber() != null) {
-
+					submitTransaction.setTransactionNumber(submitTransactionRequest.getTransactionNumber());
+					
 				}
 			}
+			submitTransaction.setCreatedDatetime(currentTime);
+			submitTransaction.setUpdatedDatetime(currentTime);
+			submitTransactionRepository.save(submitTransaction);
 		}
 		// TODO Auto-generated method stub
 		return null;

@@ -28,8 +28,8 @@ public class SubmitTransaction {
     @GeneratedValue(strategy = GenerationType.AUTO)
 	private double id;
 	
-	@Column(name = "transaction_path")
-    private String transactionPath;
+//	@Column(name = "transaction_path")
+//    private String transactionPath;
 	
 	@Column(name = "transaction_number")
     private String transactionNumber;
