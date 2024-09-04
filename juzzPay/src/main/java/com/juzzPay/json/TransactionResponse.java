@@ -13,10 +13,11 @@ import lombok.NoArgsConstructor;
 @Builder
 public class TransactionResponse {
 	
-	public Integer id;
+	public Long id;
 	public Integer amount;
 //	public Account account;
-	public byte[] imageQR;
+//	public byte[] imageQR;
+	public String imageQR;
 	public Integer paymentStatus;
 
 }

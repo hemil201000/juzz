@@ -9,16 +9,21 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.Optional;
+
+import javax.imageio.ImageIO;
 
 import com.juzzPay.entity.Account;
 import com.juzzPay.entity.SubmitTransaction;
 import com.juzzPay.entity.Transaction;
 import com.juzzPay.json.SubmitTransactionRequest;
+import com.juzzPay.json.SubmitTransactionResponse;
 import com.juzzPay.json.TransactionRequest;
 import com.juzzPay.json.TransactionResponse;
 import com.juzzPay.repository.SubmitTransactionRepository;
@@ -37,10 +42,10 @@ public class TransactionService {
 	@Autowired
 	public SubmitTransactionRepository submitTransactionRepository;
 	
-	
-
 	public TransactionResponse getQrImage(TransactionRequest transactionRequest) {
 
+		Transaction saveTransaction = new Transaction();
+		TransactionResponse transactionResponse = new TransactionResponse();
 		Account account = accountService.fetchEnabledAccount();
 		String Upi = account.getAccountUpi();
 		String Name = account.getAccountHolderName();
@@ -48,7 +53,7 @@ public class TransactionService {
 		LocalDateTime currentTime = LocalDateTime.now();
 		String upiUrl = "upi://pay?pa=" + Upi + "&pn=" + Name + "&am=" + amount + "&cu=INR";
 		System.out.println(upiUrl);
-		File qrImage = generateBarcode(upiUrl, "upi_barcode.png");
+		String qrImage = generateBarcode(upiUrl, "upi_barcode.png");
 		if (qrImage != null) {
 			Transaction transaction = new Transaction();
 			transaction.setAmount(amount);
@@ -56,40 +61,35 @@ public class TransactionService {
 			transaction.setUpdatedDatetime(currentTime);
 			transaction.setUserStatus(2);
 			transaction.setAccount(account);
-			transaction =  transactionRepository.save(transaction);
+			saveTransaction =  transactionRepository.save(transaction);
 		}
-		return null;
+		System.out.println(saveTransaction);
+		transactionResponse.setId(saveTransaction.getId());
+		transactionResponse.setAmount(amount);
+		transactionResponse.setImageQR(qrImage);
+		return transactionResponse;
 	}
 
-	public static byte[] getPngFileBytes(File file) {
-		try (FileInputStream fis = new FileInputStream(file)) {
-			byte[] bytes = new byte[(int) file.length()];
-			fis.read(bytes);
-			return bytes;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	public static File generateBarcode(String upiUrl, String fileName) {
+	public static String generateBarcode(String upiUrl, String fileName) {
 		try {
 			QRCodeWriter qrCodeWriter = new QRCodeWriter();
 			BitMatrix bitMatrix = qrCodeWriter.encode(upiUrl, BarcodeFormat.QR_CODE, 300, 300);
-			System.out.println(bitMatrix);
-			File outputFile = new File(fileName);
-			MatrixToImageWriter.writeToFile(bitMatrix, "PNG", outputFile);
-			System.out.println("Barcode generated: " + outputFile.getAbsolutePath());
-			return outputFile;
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+	        ImageIO.write(MatrixToImageWriter.toBufferedImage(bitMatrix), "png", byteArrayOutputStream);
+	        
+	        byte[] imageBytes = byteArrayOutputStream.toByteArray();
+			return Base64.getEncoder().encodeToString(imageBytes);
 		} catch (WriterException | IOException e) {
 			e.printStackTrace();
-			return null;
+			return e.getMessage();
 		}
 	}
 
-	public String submitTransaction(SubmitTransactionRequest submitTransactionRequest) {
+	public SubmitTransactionResponse submitTransaction(SubmitTransactionRequest submitTransactionRequest) {
 
 		SubmitTransaction submitTransaction = new SubmitTransaction();
+		SubmitTransaction saveSubmitTransaction = new SubmitTransaction();
+		SubmitTransactionResponse submitTransactionResponse = new SubmitTransactionResponse();
 		LocalDateTime currentTime = LocalDateTime.now();
 
 		if (submitTransactionRequest.getTransactionId() != null) {
@@ -106,10 +106,18 @@ public class TransactionService {
 			}
 			submitTransaction.setCreatedDatetime(currentTime);
 			submitTransaction.setUpdatedDatetime(currentTime);
-			submitTransactionRepository.save(submitTransaction);
+			saveSubmitTransaction = submitTransactionRepository.save(submitTransaction);
+			if(saveSubmitTransaction!= null) {
+				submitTransactionResponse.setSubmitTransactionId(saveSubmitTransaction.getId());
+				submitTransactionResponse.setMessage("SUCCESS");
+			}else {
+				submitTransactionResponse.setMessage("FAILED");
+			}
+		}else {
+			submitTransactionResponse.setMessage("INVALID TRANSACTION");
 		}
-		// TODO Auto-generated method stub
-		return null;
+		
+		return submitTransactionResponse;
 	}
 
 }

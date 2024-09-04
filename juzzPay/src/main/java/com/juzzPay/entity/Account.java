@@ -43,52 +43,6 @@ public class Account {
 	@Column(name = "updated_date")
     private Date updatedDate;
     
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Transaction> transactions;
-    
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
-	public String getAccountHolderName() {
-		return accountHolderName;
-	}
-	public void setAccountHolderName(String accountHolderName) {
-		this.accountHolderName = accountHolderName;
-	}
-	
-	public String getAccountUpi() {
-		return accountUpi;
-	}
-	public void setAccountUpi(String accountUpi) {
-		this.accountUpi = accountUpi;
-	}
-	
-	public boolean isActive() {
-		return isActive;
-	}
-	public void setActive(boolean isActive) {
-		this.isActive = isActive;
-	}
-	
-	public Date getCreatedDate() {
-		return createdDate;
-	}
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
-	
-	public Date getUpdatedDate() {
-		return updatedDate;
-	}
-	public void setUpdatedDate(Date updatedDate) {
-		this.updatedDate = updatedDate;
-	}
-    
-    
 
 }
 

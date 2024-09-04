@@ -26,7 +26,7 @@ public class SubmitTransaction {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-	private double id;
+	private Long id;
 	
 //	@Column(name = "transaction_path")
 //    private String transactionPath;
