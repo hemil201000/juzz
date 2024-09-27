@@ -20,5 +20,6 @@ public class SubmitTransactionRequest {
 	public MultipartFile file;
 	public Long transactionId;
 	public String transactionNumber;
+	public String upiId;
 
 }

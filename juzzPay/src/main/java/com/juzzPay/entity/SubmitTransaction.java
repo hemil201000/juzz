@@ -34,6 +34,9 @@ public class SubmitTransaction {
 	@Column(name = "transaction_number")
     private String transactionNumber;
 	
+	@Column(name = "upi_ID")
+    private String upiID;
+	
 	@ManyToOne
     @JoinColumn(name = "transaction_id")
 	private Transaction transaction;

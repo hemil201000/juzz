@@ -38,10 +38,10 @@ public class TransactionService {
 
 	@Autowired
 	public TransactionRepository transactionRepository;
-	
+
 	@Autowired
 	public SubmitTransactionRepository submitTransactionRepository;
-	
+
 	public TransactionResponse getQrImage(TransactionRequest transactionRequest) {
 
 		Transaction saveTransaction = new Transaction();
@@ -61,7 +61,7 @@ public class TransactionService {
 			transaction.setUpdatedDatetime(currentTime);
 			transaction.setUserStatus(2);
 			transaction.setAccount(account);
-			saveTransaction =  transactionRepository.save(transaction);
+			saveTransaction = transactionRepository.save(transaction);
 		}
 		System.out.println(saveTransaction);
 		transactionResponse.setId(saveTransaction.getId());
@@ -75,9 +75,9 @@ public class TransactionService {
 			QRCodeWriter qrCodeWriter = new QRCodeWriter();
 			BitMatrix bitMatrix = qrCodeWriter.encode(upiUrl, BarcodeFormat.QR_CODE, 300, 300);
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-	        ImageIO.write(MatrixToImageWriter.toBufferedImage(bitMatrix), "png", byteArrayOutputStream);
-	        
-	        byte[] imageBytes = byteArrayOutputStream.toByteArray();
+			ImageIO.write(MatrixToImageWriter.toBufferedImage(bitMatrix), "png", byteArrayOutputStream);
+
+			byte[] imageBytes = byteArrayOutputStream.toByteArray();
 			return Base64.getEncoder().encodeToString(imageBytes);
 		} catch (WriterException | IOException e) {
 			e.printStackTrace();
@@ -94,29 +94,31 @@ public class TransactionService {
 
 		if (submitTransactionRequest.getTransactionId() != null) {
 			Transaction transaction = transactionRepository.getById(submitTransactionRequest.getTransactionId());
-			
+
 			if (transaction != null) {
 				submitTransaction.setTransaction(transaction);
 				if (submitTransactionRequest.getFile() != null) {
-					
+
 				} else if (submitTransactionRequest.getTransactionNumber() != null) {
 					submitTransaction.setTransactionNumber(submitTransactionRequest.getTransactionNumber());
-					
+
+				}else if (submitTransactionRequest.getUpiId() != null) {
+					submitTransaction.setUpiID(submitTransactionRequest.getUpiId());
 				}
 			}
 			submitTransaction.setCreatedDatetime(currentTime);
 			submitTransaction.setUpdatedDatetime(currentTime);
 			saveSubmitTransaction = submitTransactionRepository.save(submitTransaction);
-			if(saveSubmitTransaction!= null) {
+			if (saveSubmitTransaction != null) {
 				submitTransactionResponse.setSubmitTransactionId(saveSubmitTransaction.getId());
 				submitTransactionResponse.setMessage("SUCCESS");
-			}else {
+			} else {
 				submitTransactionResponse.setMessage("FAILED");
 			}
-		}else {
+		} else {
 			submitTransactionResponse.setMessage("INVALID TRANSACTION");
 		}
-		
+
 		return submitTransactionResponse;
 	}
 
