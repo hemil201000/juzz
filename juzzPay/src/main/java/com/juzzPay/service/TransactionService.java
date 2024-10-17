@@ -99,10 +99,12 @@ public class TransactionService {
 				submitTransaction.setTransaction(transaction);
 				if (submitTransactionRequest.getFile() != null) {
 
-				} else if (submitTransactionRequest.getTransactionNumber() != null) {
+				}
+				if (submitTransactionRequest.getTransactionNumber() != null) {
 					submitTransaction.setTransactionNumber(submitTransactionRequest.getTransactionNumber());
 
-				}else if (submitTransactionRequest.getUpiId() != null) {
+				}
+				if (submitTransactionRequest.getUpiId() != null) {
 					submitTransaction.setUpiID(submitTransactionRequest.getUpiId());
 				}
 			}

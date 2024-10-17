@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class AdminTransaction {
 	
-	private long submitTransactionId;
+	private long clientTransactionId;
 	private long transactionId;
 	private String upiId;
 	private String transactionNumber;
@@ -15,11 +15,11 @@ public class AdminTransaction {
 	
 	
 	
-	public long getSubmitTransactionId() {
-		return submitTransactionId;
+	public long getClientTransactionId() {
+		return clientTransactionId;
 	}
-	public void setSubmitTransactionId(long submitTransactionId) {
-		this.submitTransactionId = submitTransactionId;
+	public void setClientTransactionId(long clientTransactionId) {
+		this.clientTransactionId = clientTransactionId;
 	}
 	public long getTransactionId() {
 		return transactionId;

@@ -1,4 +1,4 @@
-package com.juzzPay.controller;
+package com.juzzPay.service;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -82,7 +82,7 @@ public class AdminTransactionService {
 		if(submitTransaction.getUpiID() != null) {
 			adminTransaction.setUpiId(submitTransaction.getUpiID());
 		}
-		adminTransaction.setSubmitTransactionId(submitTransaction.getId());
+		adminTransaction.setClientTransactionId(submitTransaction.getId());
 		adminTransaction.setDatetimeSubmitTransaction(submitTransaction.getCreatedDatetime());
 		return adminTransaction;
 	}
