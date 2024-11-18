@@ -30,8 +30,8 @@ public class TransactionController {
 	
 	@PostMapping("/submit/transaction")
 	public SubmitTransactionResponse submitTransaction(@RequestBody SubmitTransactionRequest submitTransactionRequest ) {
-		
-		SubmitTransactionResponse response = transactionService.submitTransaction(submitTransactionRequest);
+		SubmitTransactionResponse response = new SubmitTransactionResponse();
+		response = transactionService.submitTransaction(submitTransactionRequest);
 		return response;
 	}
 

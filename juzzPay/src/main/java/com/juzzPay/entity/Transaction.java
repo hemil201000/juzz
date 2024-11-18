@@ -42,6 +42,9 @@ public class Transaction {
 	@ManyToOne
     @JoinColumn(name = "account_id")
     private Account account;
+	
+	@Column(name = "transaction_unique_number")
+	private String transactionUqNumber;
 
 	@Column(name = "created_datetime")
     private LocalDateTime createdDatetime;

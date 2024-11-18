@@ -4,8 +4,8 @@ import java.time.LocalDateTime;
 
 public class AdminTransaction {
 	
-	private long clientTransactionId;
-	private long transactionId;
+	private String clientTransactionId;
+	private String transactionId;
 	private String upiId;
 	private String transactionNumber;
 	private long accId;
@@ -14,17 +14,16 @@ public class AdminTransaction {
 	private LocalDateTime datetimeSubmitTransaction;
 	
 	
-	
-	public long getClientTransactionId() {
+	public String getClientTransactionId() {
 		return clientTransactionId;
 	}
-	public void setClientTransactionId(long clientTransactionId) {
+	public void setClientTransactionId(String clientTransactionId) {
 		this.clientTransactionId = clientTransactionId;
 	}
-	public long getTransactionId() {
+	public String getTransactionId() {
 		return transactionId;
 	}
-	public void setTransactionId(long transactionId) {
+	public void setTransactionId(String transactionId) {
 		this.transactionId = transactionId;
 	}
 	public String getUpiId() {

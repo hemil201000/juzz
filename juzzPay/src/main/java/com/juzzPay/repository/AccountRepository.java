@@ -14,6 +14,6 @@ public interface AccountRepository  extends JpaRepository<Account, Long> {
 	
 //	List<Accounts> findByIsActive(boolean isActive);
 	
-	Account findByIsActive(boolean isActive);
+	List<Account> findByIsActive(boolean isActive);
 
 }

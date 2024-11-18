@@ -3,6 +3,7 @@ package com.juzzPay.service;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -64,15 +65,18 @@ public class AdminTransactionService {
 
 	private AdminTransaction convertToTransactionJson(SubmitTransaction submitTransaction) {
 		
-		Transaction transaction = new Transaction();
+		Optional<Transaction> getTransaction = transactionRepository.findById(submitTransaction.getTransaction().getId());
 		AdminTransaction adminTransaction = new AdminTransaction();
 		
-		transaction = transactionRepository.getById(submitTransaction.getTransaction().getId());
-				
+//		transaction = transactionRepository.findById(submitTransaction.getTransaction().getId());
+		Transaction transaction = new Transaction();
+		if(getTransaction.isPresent()) {
+			transaction = getTransaction.get();
+		}
 		if(transaction != null) {
 			adminTransaction.setAccId(transaction.getAccount().getId());
 			adminTransaction.setAmount(transaction.getAmount());
-			adminTransaction.setTransactionId(transaction.getId());
+			adminTransaction.setTransactionId(transaction.getTransactionUqNumber());
 			adminTransaction.setDatetimeTransaction(transaction.getCreatedDatetime());
 		}
 		
@@ -82,7 +86,7 @@ public class AdminTransactionService {
 		if(submitTransaction.getUpiID() != null) {
 			adminTransaction.setUpiId(submitTransaction.getUpiID());
 		}
-		adminTransaction.setClientTransactionId(submitTransaction.getId());
+		adminTransaction.setClientTransactionId(submitTransaction.getSubmitTransactionUqNumber());
 		adminTransaction.setDatetimeSubmitTransaction(submitTransaction.getCreatedDatetime());
 		return adminTransaction;
 	}

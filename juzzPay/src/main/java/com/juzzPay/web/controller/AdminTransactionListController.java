@@ -1,4 +1,4 @@
-package com.juzzPay.controller;
+package com.juzzPay.web.controller;
 
 import java.text.ParseException;
 

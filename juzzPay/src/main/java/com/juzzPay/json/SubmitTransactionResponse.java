@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class SubmitTransactionResponse {
 	
-	public Long submitTransactionId;
+	public String submitTransactionId;
 	public String message;
 
 }

@@ -41,6 +41,9 @@ public class SubmitTransaction {
     @JoinColumn(name = "transaction_id")
 	private Transaction transaction;
 	
+	@Column(name = "submit_transaction_unique_number")
+	private String submitTransactionUqNumber;
+	
 	@Column(name = "created_datetime")
     private LocalDateTime createdDatetime;
 	

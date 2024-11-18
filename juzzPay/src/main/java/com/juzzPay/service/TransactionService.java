@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 
 import javax.imageio.ImageIO;
 
@@ -53,7 +54,8 @@ public class TransactionService {
 		LocalDateTime currentTime = LocalDateTime.now();
 		String upiUrl = "upi://pay?pa=" + Upi + "&pn=" + Name + "&am=" + amount + "&cu=INR";
 		System.out.println(upiUrl);
-		String qrImage = generateBarcode(upiUrl, "upi_barcode.png");
+		String qrImage = generateBarcode(upiUrl);
+		String uniqueNumber = null;
 		if (qrImage != null) {
 			Transaction transaction = new Transaction();
 			transaction.setAmount(amount);
@@ -61,16 +63,23 @@ public class TransactionService {
 			transaction.setUpdatedDatetime(currentTime);
 			transaction.setUserStatus(2);
 			transaction.setAccount(account);
+			do {
+				uniqueNumber = String.valueOf(ThreadLocalRandom.current().nextInt(10000000, 100000000));
+			} while (transactionRepository.findByTransactionUqNumber(uniqueNumber).isPresent());
+
+			transaction.setTransactionUqNumber(uniqueNumber);
+
 			saveTransaction = transactionRepository.save(transaction);
 		}
 		System.out.println(saveTransaction);
 		transactionResponse.setId(saveTransaction.getId());
 		transactionResponse.setAmount(amount);
 		transactionResponse.setImageQR(qrImage);
+		transactionResponse.setTransactionUqNumber(uniqueNumber);
 		return transactionResponse;
 	}
 
-	public static String generateBarcode(String upiUrl, String fileName) {
+	public static String generateBarcode(String upiUrl) {
 		try {
 			QRCodeWriter qrCodeWriter = new QRCodeWriter();
 			BitMatrix bitMatrix = qrCodeWriter.encode(upiUrl, BarcodeFormat.QR_CODE, 300, 300);
@@ -91,12 +100,14 @@ public class TransactionService {
 		SubmitTransaction saveSubmitTransaction = new SubmitTransaction();
 		SubmitTransactionResponse submitTransactionResponse = new SubmitTransactionResponse();
 		LocalDateTime currentTime = LocalDateTime.now();
+		String submitTransactionUnique = null;
 
 		if (submitTransactionRequest.getTransactionId() != null) {
-			Transaction transaction = transactionRepository.getById(submitTransactionRequest.getTransactionId());
+			Optional<Transaction> transaction = transactionRepository
+					.findById(submitTransactionRequest.getTransactionId());
 
 			if (transaction != null) {
-				submitTransaction.setTransaction(transaction);
+				submitTransaction.setTransaction(transaction.get());
 				if (submitTransactionRequest.getFile() != null) {
 
 				}
@@ -107,16 +118,24 @@ public class TransactionService {
 				if (submitTransactionRequest.getUpiId() != null) {
 					submitTransaction.setUpiID(submitTransactionRequest.getUpiId());
 				}
-			}
-			submitTransaction.setCreatedDatetime(currentTime);
-			submitTransaction.setUpdatedDatetime(currentTime);
-			saveSubmitTransaction = submitTransactionRepository.save(submitTransaction);
-			if (saveSubmitTransaction != null) {
-				submitTransactionResponse.setSubmitTransactionId(saveSubmitTransaction.getId());
-				submitTransactionResponse.setMessage("SUCCESS");
+				do {
+					submitTransactionUnique = String.valueOf(ThreadLocalRandom.current().nextInt(10000000, 100000000));
+				} while (submitTransactionRepository.findBySubmitTransactionUqNumber(submitTransactionUnique).isPresent());
+				
+				submitTransaction.setSubmitTransactionUqNumber(submitTransactionUnique);
+				submitTransaction.setCreatedDatetime(currentTime);
+				submitTransaction.setUpdatedDatetime(currentTime);
+				saveSubmitTransaction = submitTransactionRepository.save(submitTransaction);
+				if (saveSubmitTransaction != null) {
+					submitTransactionResponse.setSubmitTransactionId(submitTransactionUnique);
+					submitTransactionResponse.setMessage("SUCCESS");
+				} else {
+					submitTransactionResponse.setMessage("FAILED");
+				}
 			} else {
-				submitTransactionResponse.setMessage("FAILED");
+				submitTransactionResponse.setMessage("INVALID TRANSACTION");
 			}
+
 		} else {
 			submitTransactionResponse.setMessage("INVALID TRANSACTION");
 		}

@@ -1,7 +1,5 @@
 package com.juzzPay.json;
 
-import com.juzzPay.entity.Account;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,5 +17,6 @@ public class TransactionResponse {
 //	public byte[] imageQR;
 	public String imageQR;
 	public Integer paymentStatus;
+	public String transactionUqNumber;
 
 }
