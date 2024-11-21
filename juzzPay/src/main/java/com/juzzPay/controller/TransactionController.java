@@ -14,7 +14,7 @@ import com.juzzPay.json.TransactionResponse;
 import com.juzzPay.service.TransactionService;
 
 @RestController
-@RequestMapping("/transaction")
+@RequestMapping("/v1")
 @CrossOrigin
 public class TransactionController {
 	
