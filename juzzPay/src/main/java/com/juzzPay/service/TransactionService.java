@@ -31,6 +31,9 @@ import com.juzzPay.repository.SubmitTransactionRepository;
 import com.juzzPay.repository.TransactionRepository;
 import com.juzzPay.util.ImageUtils;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class TransactionService {
 
@@ -129,15 +132,19 @@ public class TransactionService {
 				if (saveSubmitTransaction != null) {
 					submitTransactionResponse.setSubmitTransactionId(submitTransactionUnique);
 					submitTransactionResponse.setMessage("SUCCESS");
+					log.info("Transaction submitted  : Upi is " +  transaction.get().getAccount().getAccountUpi() + " ");
 				} else {
 					submitTransactionResponse.setMessage("FAILED");
+					log.info("Transaction submition failed  : Upi is " +  transaction.get().getAccount().getAccountUpi() + " ");
 				}
 			} else {
 				submitTransactionResponse.setMessage("INVALID TRANSACTION");
+				log.info("Transaction submition failed  : Upi is " +  transaction.get().getAccount().getAccountUpi() + " ");
 			}
 
 		} else {
 			submitTransactionResponse.setMessage("INVALID TRANSACTION");
+			log.info("Transaction submition failed ");
 		}
 
 		return submitTransactionResponse;
