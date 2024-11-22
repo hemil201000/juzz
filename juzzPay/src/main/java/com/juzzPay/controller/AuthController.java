@@ -15,19 +15,22 @@ import com.juzzPay.json.userRequestJson;
 import com.juzzPay.service.JwtService;
 import com.juzzPay.service.UserInfoService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
 @RequestMapping("/api")
 @CrossOrigin
+@Slf4j
 public class AuthController {
 
 //    @Autowired
 //    private UserService userService;
 
-    @Autowired
-    private JwtService jwtService;
+	@Autowired
+	private JwtService jwtService;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+	@Autowired
+	private AuthenticationManager authenticationManager;
 
 //    @PostMapping("/register")
 //    public ResponseEntity<String> register(@RequestBody userRequestJson user) {
@@ -35,20 +38,25 @@ public class AuthController {
 //        return ResponseEntity.ok("User registered successfully");
 //    }
 
-    @PostMapping("/login")
-    public LoginResponse login(@RequestBody userRequestJson userRequest) {
-    	LoginResponse login  = new LoginResponse();
+	@PostMapping("/login")
+	public LoginResponse login(@RequestBody userRequestJson userRequest) {
+		LoginResponse login = new LoginResponse();
+		try {
 
-        Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(userRequest.getUserName(), userRequest.getPassword())
-        );
-        if (authentication.isAuthenticated()) {
-        	String token = jwtService.generateToken(userRequest.getUserName());
-        	login.setAccess_token("Bearer " + token);
-        	login.setIsVerified(true);
-            return login;
-        } else {
-            throw new UsernameNotFoundException("Invalid user request!");
-        }
-    }
+			Authentication authentication = authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(userRequest.getUserName(), userRequest.getPassword()));
+			if (authentication.isAuthenticated()) {
+				String token = jwtService.generateToken(userRequest.getUserName());
+				login.setAccess_token("Bearer " + token);
+				login.setIsVerified(true);
+				return login;
+			} else {
+				throw new UsernameNotFoundException("Invalid user request!");
+			}
+
+		} catch (Exception e) {
+			log.error("Login Error : " + e);
+		}
+		return login;
+	}
 }

@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 public class SubmitTransaction {
 	
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 //	@Column(name = "transaction_path")

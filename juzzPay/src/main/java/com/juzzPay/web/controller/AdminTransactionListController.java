@@ -13,8 +13,11 @@ import com.juzzPay.json.AdminTransactionListRequest;
 import com.juzzPay.json.AdminTransactionListResponse;
 import com.juzzPay.service.AdminTransactionService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
 @RequestMapping("/admin")
+@Slf4j
 @CrossOrigin
 public class AdminTransactionListController {
 	
@@ -23,7 +26,14 @@ public class AdminTransactionListController {
 	
 	@PostMapping("/transaction/list")
 	public AdminTransactionListResponse getSurveysList(@RequestBody AdminTransactionListRequest adminTransactionListRequest) throws ParseException {
-		return adminTransactionService.getList(adminTransactionListRequest);
+		AdminTransactionListResponse adminTransactionListResponse = new AdminTransactionListResponse();
+		try {
+			adminTransactionListResponse = adminTransactionService.getList(adminTransactionListRequest);
+		}catch (Exception e) {
+			// TODO: handle exception
+			log.error("Error Fetching Transaction List" + e);
+		}
+		return adminTransactionListResponse;
 	}
 
 }
