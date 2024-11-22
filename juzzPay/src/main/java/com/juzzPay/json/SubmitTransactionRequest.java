@@ -17,7 +17,7 @@ import lombok.Setter;
 @Data
 public class SubmitTransactionRequest {
 	
-	public MultipartFile file;
+//	public MultipartFile file;
 	public Long transactionId;
 	public String transactionNumber;
 	public String upiId;

@@ -12,6 +12,7 @@
 	<groupId>com</groupId>
 	<artifactId>juzzPay</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
 	<name>juzzPay</name>
 	<description>Demo project for Spring Boot</description>
 	<url />
@@ -29,6 +30,7 @@
 	</scm>
 	<properties>
 		<java.version>17</java.version>
+		<war.filename>api</war.filename>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -41,10 +43,10 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
-		<!-- <dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency> -->
+		</dependency>
 
 		<dependency>
 			<groupId>mysql</groupId>
@@ -108,6 +110,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>${war.filename}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

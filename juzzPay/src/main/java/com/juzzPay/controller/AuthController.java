@@ -19,24 +19,16 @@ import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin
 @Slf4j
+@CrossOrigin
 public class AuthController {
 
-//    @Autowired
-//    private UserService userService;
 
 	@Autowired
 	private JwtService jwtService;
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
-
-//    @PostMapping("/register")
-//    public ResponseEntity<String> register(@RequestBody userRequestJson user) {
-//        userService.registerUser(user.getUserName(), user.getPassword());
-//        return ResponseEntity.ok("User registered successfully");
-//    }
 
 	@PostMapping("/login")
 	public LoginResponse login(@RequestBody userRequestJson userRequest) {

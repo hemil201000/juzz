@@ -10,10 +10,6 @@ import com.juzzPay.entity.Account;
 @Repository
 public interface AccountRepository  extends JpaRepository<Account, Long> {
 	
-//	Accounts findByisActive();
-	
-//	List<Accounts> findByIsActive(boolean isActive);
-	
 	List<Account> findByIsActive(boolean isActive);
 
 }

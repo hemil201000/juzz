@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.juzzPay.json.SubmitTransactionRequest;
 import com.juzzPay.json.SubmitTransactionResponse;
 import com.juzzPay.json.TransactionRequest;
@@ -23,6 +24,9 @@ public class TransactionController {
 
 	@Autowired
 	private TransactionService transactionService;
+	
+	@Autowired
+	private ObjectMapper obj;
 
 	@PostMapping("/generateQR")
 	public TransactionResponse saveAccount(@RequestBody TransactionRequest transactionRequest) {
@@ -40,11 +44,20 @@ public class TransactionController {
 	@PostMapping("/submit/transaction")
 	public SubmitTransactionResponse submitTransaction(@RequestBody SubmitTransactionRequest submitTransactionRequest) {
 		SubmitTransactionResponse response = new SubmitTransactionResponse();
+		String loggingRequestId = System.currentTimeMillis()+"";
+		String jsonStr = "";
 		try {
-			response = transactionService.submitTransaction(submitTransactionRequest);
+			jsonStr = obj.writeValueAsString(submitTransactionRequest);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		log.info("RequestID:{} /submit request json:{}:",loggingRequestId, jsonStr);
+		try {
+			response = transactionService.submitTransaction(submitTransactionRequest, loggingRequestId);
 		} catch (Exception e) {
 			// TODO: handle exception
-			log.error("Error Submitting Payment :" + e);
+			log.error("Error Submitting Payment Request_ID:"+loggingRequestId +", " + e);
 		}
 
 		return response;

@@ -97,7 +97,7 @@ public class TransactionService {
 		}
 	}
 
-	public SubmitTransactionResponse submitTransaction(SubmitTransactionRequest submitTransactionRequest) {
+	public SubmitTransactionResponse submitTransaction(SubmitTransactionRequest submitTransactionRequest, String loggingRequestId) {
 
 		SubmitTransaction submitTransaction = new SubmitTransaction();
 		SubmitTransaction saveSubmitTransaction = new SubmitTransaction();
@@ -111,9 +111,6 @@ public class TransactionService {
 
 			if (transaction != null) {
 				submitTransaction.setTransaction(transaction.get());
-				if (submitTransactionRequest.getFile() != null) {
-
-				}
 				if (submitTransactionRequest.getTransactionNumber() != null) {
 					submitTransaction.setTransactionNumber(submitTransactionRequest.getTransactionNumber());
 
@@ -132,21 +129,22 @@ public class TransactionService {
 				if (saveSubmitTransaction != null) {
 					submitTransactionResponse.setSubmitTransactionId(submitTransactionUnique);
 					submitTransactionResponse.setMessage("SUCCESS");
-					log.info("Transaction submitted  : Upi is " +  transaction.get().getAccount().getAccountUpi() + " ");
+//					log.info("Transaction submitted  : Upi is " +  transaction.get().getAccount().getAccountUpi() + " ");
+					
 				} else {
 					submitTransactionResponse.setMessage("FAILED");
-					log.info("Transaction submition failed  : Upi is " +  transaction.get().getAccount().getAccountUpi() + " ");
+					
 				}
 			} else {
 				submitTransactionResponse.setMessage("INVALID TRANSACTION");
-				log.info("Transaction submition failed  : Upi is " +  transaction.get().getAccount().getAccountUpi() + " ");
+				
 			}
 
 		} else {
 			submitTransactionResponse.setMessage("INVALID TRANSACTION");
-			log.info("Transaction submition failed ");
+			
 		}
-
+		log.info("RequestID:{} /submit response json:{}:",loggingRequestId,submitTransactionResponse.toString() );
 		return submitTransactionResponse;
 	}
 
